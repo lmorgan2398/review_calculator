@@ -14,3 +14,13 @@ buttonsContainer.addEventListener('click', (event) => {
         displayContainer.textContent = firstNumber;
     }
 })
+
+const math = (() => {
+    const add = (first, second) => { return first + second };
+    const subtract = (first, second) => { return first - second };
+    const multiply = (first, second) => { return first * second };
+    const divide = (first, second) => { return first / second };
+    const exponent = (first, second) => { return first ** second };
+
+    return { add, subtract, multiply, divide, exponent };
+})();
