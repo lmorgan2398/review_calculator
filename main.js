@@ -22,9 +22,17 @@ const buttonsContainer = document.querySelector('.buttons-container');
 buttonsContainer.addEventListener('click', (event) => {
     let button = event.target.closest('.button');
     if (button.classList.contains('digit')) {
-        firstNumber += button.textContent;
-        displayContainer.textContent = firstNumber;
+        if ( operator == '' ) {
+            firstNumber.value += button.textContent;
+        } else {
+            secondNumber.value += button.textContent;
+        }
+    } else if (button.classList.contains('operator')) {
+        if ( operator == '' ) {
+            operator = button.textContent;
+        }
     }
+    displayContainer.textContent = `${firstNumber.value} ${operator} ${secondNumber.value}`;
 })
 
 const operation = (() => {
@@ -38,24 +46,27 @@ const operation = (() => {
 
 })();
 
-const transform = (() => {
+const transformations = {
 
-    const exponent = (first, second) => { return first ** second };
-    const squareRoot = (num) => { return Math.sqrt(num) };
+        exponent: (first, second) => { return first ** second },
+        squareRoot: (num) => { return Math.sqrt(num) },
+        degToRad: (num) => { return num * ( Math.PI() / 180 )},
+        sin: (num) => { return Math.sin(num) },
+        cos: (num) => { return Math.cos(num) },
+        tan: (num) => { return Math.tan(num) },
+        asin: (num) => { return Math.asin(num) },
+        acos: (num) => { return Math.acos(num) },
+        atan: (num) => { return Math.atan(num) },
+        ln: (num) => { return Math.log(num) },
+        log: (num) => { return Math.log10(num) }
 
-    const degToRad = (num) => { return num * ( Math.PI / 180 ) };
+};
 
-    const sin = (num) => { return Math.sin(num) };
-    const cos = (num) => { return Math.cos(num) };
-    const tan = (num) => { return Math.tan(num) };
+const transform = (numberObj) => {
 
-    const asin = (num) => { return Math.asin(num) };
-    const acos = (num) => { return Math.acos(num) };
-    const atan = (num) => { return Math.atan(num) };
+    numberObj.value = transformations[numberObj.transform](numberObj.value, numberObj.transformValue);
+    numberObj.transform = '';
+    numberObj.transformValue = '';
+    return;
 
-    const ln = (num) => { return Math.log(num) };
-    const log = (num) => { return Math.log10(num) };
-
-    return { exponent, squareRoot, degToRad, sin, cos, tan, asin, acos, atan, ln, log };
-
-})();
+};
